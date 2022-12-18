@@ -5,7 +5,9 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import org.apache.catalina.authenticator.jaspic.PersistentProviderRegistrations.Property;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -65,6 +67,26 @@ public class PropertyServiceImplTest {
 		when(repository.findAllByPropertyType(propertyId)).thenThrow(NullPointerException.class);
 		service.getProperties(propertyId);
 	
+	}
+	
+	@Test
+	public void testGetProperty() throws Exception
+	{
+		PropertyEntity propertyEntity=Mockito.mock(PropertyEntity.class);
+		when(repository.findById(Mockito.any())).thenReturn(Optional.of(propertyEntity));
+		
+		PropertyEntity propertyEntity2=service.getProperty(1);
+		assertNotNull(propertyEntity2);
+	}
+	
+	@Test(expected=GoSmartException.class)
+	public void testGetProperty_Exception() throws Exception
+	{
+		PropertyEntity propertyEntity=Mockito.mock(PropertyEntity.class);
+		when(repository.findById(Mockito.any())).thenThrow(NullPointerException.class);
+		
+		PropertyEntity propertyEntity2=service.getProperty(1);
+		assertNotNull(propertyEntity2);
 	}
 	
 	
