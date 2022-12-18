@@ -3,6 +3,9 @@ package com.gosmart;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -42,4 +45,27 @@ public class PropertyServiceImplTest {
 		
 	
 	}
+	@Test
+	public void testGetProperties() throws Exception
+	{
+		Integer propertyId=1;
+		List<PropertyEntity> property=new ArrayList<>();
+		when(repository.findAllByPropertyType(propertyId)).thenReturn(property);
+		List<PropertyEntity> property1=service.getProperties(propertyId);
+		assertNotNull(property1);
+		
+		
+	
+	}
+	@Test(expected = GoSmartException.class)
+	public void testGetProperties_Exception() throws Exception
+	{
+		Integer propertyId=1;
+		
+		when(repository.findAllByPropertyType(propertyId)).thenThrow(NullPointerException.class);
+		service.getProperties(propertyId);
+	
+	}
+	
+	
 }

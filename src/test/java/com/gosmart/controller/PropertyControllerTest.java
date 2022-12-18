@@ -3,17 +3,26 @@ package com.gosmart.controller;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.internal.stubbing.answers.ThrowsException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+
+
+
 import com.gosmart.repository.entity.PropertyEntity;
 import com.gosmart.service.PropertyService;
+
+
 
 @RunWith(SpringJUnit4ClassRunner.class)
 
@@ -41,6 +50,27 @@ public class PropertyControllerTest {
 		ResponseEntity<Integer>response=propertyController.insertProperty(propertyEntity);
 		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
 	}
+	
+	@Test
+	public void testGetProperties() throws Exception
+	{
+		Integer propertyId=1;
+		List<PropertyEntity> property=new ArrayList<>();
+		when(service.getProperties(propertyId)).thenReturn(property);
+		ResponseEntity<List<PropertyEntity>> responseEntity=propertyController.getProperties(propertyId);
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+	}
+
+	
+	@Test
+	public void testGetProperties_Exception() throws Exception
+	{
+		Integer PropertyId=1;
+		when(service.getProperties(PropertyId)).thenThrow(NullPointerException.class);
+		ResponseEntity<List<PropertyEntity>> responseEntity=propertyController.getProperties(PropertyId);
+		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+	}
+	
 	
 	
 }

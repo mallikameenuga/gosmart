@@ -1,5 +1,7 @@
 package com.gosmart.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,20 +29,20 @@ public class PropertyServiceImpl implements PropertyService{
 	public Integer insertProperty(PropertyEntity propertyEntity) {
 		
 		Integer propertyId=0;
-		log.info("{}-ServiceImpl insertUser() started",PropertyConstants.PROPERTY);
+		log.info("{}-ServiceImpl insertproperty() started",PropertyConstants.PROPERTY);
 		
 		try 
 		{
-			log.info("{}-ServiceImpl insertProperty() saving userDetails in repository",PropertyConstants.PROPERTY);
+			log.info("{}-ServiceImpl insertProperty() saving propertyDetails in repository",PropertyConstants.PROPERTY);
 			
 			if(propertyEntity!=null)
 			{
 				PropertyEntity propertyEntity2=propertyRepository.save(propertyEntity);
-				log.info("{}-ServiceImpl insertUser() saved userDetails in repository",PropertyConstants.PROPERTY);
+				log.info("{}-ServiceImpl insertProperty() saved propertyDetails in repository",PropertyConstants.PROPERTY);
 				if(propertyEntity2!=null)
 				{
 					propertyId=propertyEntity2.getPropertyId();
-					log.info("{}-ServiceImpl insertUser() userId is-{}",PropertyConstants.PROPERTY,propertyId);
+					log.info("{}-ServiceImpl insertProperty() propertyId is-{}",PropertyConstants.PROPERTY,propertyId);
 				}
 			}
 			
@@ -52,4 +54,17 @@ public class PropertyServiceImpl implements PropertyService{
 		}
 		return propertyId;
 	}
+	@Override
+	public List<PropertyEntity> getProperties(Integer propertyType) {
+		List<PropertyEntity> properties=null;
+		try {
+			properties=propertyRepository.findAllByPropertyType(propertyType);
+		} catch (Exception e) {
+			log.error ("{}-Serviceimpl insertProperty() exception occured-{}",PropertyConstants.PROPERTY,e.getMessage());
+			throw new GoSmartException(e.getMessage());
+		}
+		return properties;
+	}
+	
+	
 }
