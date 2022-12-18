@@ -1,6 +1,7 @@
 package com.gosmart.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -64,6 +65,21 @@ public class PropertyServiceImpl implements PropertyService{
 			throw new GoSmartException(e.getMessage());
 		}
 		return properties;
+	}
+	@Override
+	public PropertyEntity getProperty(Integer propertyId) {
+		PropertyEntity propertyEntity=null;
+		try {
+			Optional<PropertyEntity> opt=propertyRepository.findById(propertyId);
+			if(opt!=null)
+			{
+				propertyEntity=opt.get();
+			}
+		} catch (Exception e) {
+			log.error ("{}-Serviceimpl insertProperty() exception occured-{}",PropertyConstants.PROPERTY,e.getMessage());
+			throw new GoSmartException(e.getMessage());
+		}
+		return propertyEntity;
 	}
 	
 	

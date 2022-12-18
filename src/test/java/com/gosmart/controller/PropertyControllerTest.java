@@ -11,7 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-
+import org.springframework.boot.actuate.autoconfigure.observation.ObservationProperties.Http;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -68,6 +68,25 @@ public class PropertyControllerTest {
 		Integer PropertyId=1;
 		when(service.getProperties(PropertyId)).thenThrow(NullPointerException.class);
 		ResponseEntity<List<PropertyEntity>> responseEntity=propertyController.getProperties(PropertyId);
+		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
+	}
+	
+	@Test
+	public void testGetProperty() throws Exception
+	{
+		Integer propertyId=1;
+		List<PropertyEntity> property=new ArrayList<>();
+		when(service.getProperty(propertyId)).thenReturn(null);
+		ResponseEntity<PropertyEntity> responseEntity=propertyController.getProperty(propertyId);
+		assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+	}
+	
+	@Test
+	public void testGetProperty_Exception()throws Exception
+	{
+		Integer propertyId=1;
+		when(service.getProperty(propertyId)).thenThrow(NullPointerException.class);
+		ResponseEntity<PropertyEntity> responseEntity=propertyController.getProperty(propertyId);
 		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseEntity.getStatusCode());
 	}
 	

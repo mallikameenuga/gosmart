@@ -49,6 +49,21 @@ public class PropertyController {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+		
+	@GetMapping("/property/property/{propertyId}")
+		public ResponseEntity<PropertyEntity> getProperty(@PathVariable Integer propertyId)
+		{
+			try {
+				log.info("In propertyController... getProperty() Method Started");
+				PropertyEntity property=propertyService.getProperty(propertyId);
+				log.info("In propertyController... propertyDetails successfully Inserted");
+				return new ResponseEntity<>(property,HttpStatus.OK);
+			} catch (Exception e)
+			{
+				log.error("In PropertyController getProperty() Method Error Message is:"+e.getMessage());
+				return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+	}
 
 
 
